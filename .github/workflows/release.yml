@@ -1,8 +1,12 @@
 name: relase_CI
 
+# run release CI when release branch pr closed
 on:
-  merge_group:
-    branches: [release]
+  pull_request:
+    branches:
+      - release
+    types:
+      - closed
 
 jobs:
   nodejs:
