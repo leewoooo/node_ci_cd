@@ -17,6 +17,13 @@ jobs:
         node-version: [18.x]
 
     steps:
+      - name: Validate mergeed
+        run: |
+          if [ "${{ github.event.pull_request.merged }}" != "true" ]; then
+            echo "PR is not merged, skip release CI"
+            exit 1
+          fi
+
       - name: Checkout source code
         uses: actions/checkout@v3
 
