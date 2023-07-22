@@ -10,7 +10,8 @@ on:
 
 jobs:
   nodejs:
-    runs-on: self-hosted
+    # runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Validate merged
@@ -23,16 +24,14 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
 
+      - name: set version env
+        run: |
+          version=$(jq -r '.version' package.json)
+          echo "VERSION=$version" >> $GITHUB_ENV
+
       - name: docker build
-        run: docker build -t hello_ci_cd .
-
-      # - name: Setup Node.js
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: ${{ matrix.node-version }}
-
-      # - name: Install dependencies
-      #   run: npm install
-
-      # - name: build
-      #   run: npm run build
+        env:
+          IMAGE_NAME: hello_ci_cd # 도커 이미지 이름과 태그를 버전 정보를 이용하여 설정합니다.
+        run: |
+          echo $IMAGE_NAME:$VERSION
+          docker build -t $IMAGE_NAME:$VERSION .

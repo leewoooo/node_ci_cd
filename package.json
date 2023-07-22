@@ -1,6 +1,6 @@
 {
   "name": "node_ci_cd",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "author": "",
   "private": true,
@@ -18,8 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "action:dev": "act pull_request --container-architecture linux/amd64",
-    "action:release": "act merge_group --container-architecture linux/amd64"
+    "action:dev": "act pull_request --container-architecture linux/amd64"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
