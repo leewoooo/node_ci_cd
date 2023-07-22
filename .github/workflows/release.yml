@@ -24,9 +24,6 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
 
-      - name: install jp
-        run: sudo apt-get install jq -y
-
       - name: set version env
         run: |
           version=$(jq -r '.version' package.json)
