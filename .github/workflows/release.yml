@@ -23,9 +23,6 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
 
-      - name: echo linux version
-        run: cat /etc/os-release
-
       - name: docker build
         run: docker build -t hello_ci_cd .
 
