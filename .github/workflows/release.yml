@@ -41,6 +41,6 @@ jobs:
           docker build -t $IMAGE_NAME:$VERSION .
 
           prevVersion=$(jq -r '.prevVersion' package.json)
-          docker stop $IMAGE_NAME_$prevVersion || true && docker rm $IMAGE_NAME_$prevVersion || echo "not exist prev container"
+          docker stop $IMAGE_NAME-$prevVersion || true && docker rm $IMAGE_NAME-$prevVersion || echo "not exist prev container"
           docker rmi $IMAGE_NAME:$prevVersion || echo "not exist prev image"
-          docker run -d -p 3005:3000 --name $IMAGE_NAME_$VERSION $IMAGE_NAME:$VERSION
+          docker run -d -p 3005:3000 --name $IMAGE_NAME:$VERSION $IMAGE_NAME-$VERSION
