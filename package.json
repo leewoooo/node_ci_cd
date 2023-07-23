@@ -1,5 +1,6 @@
 {
   "name": "node_ci_cd",
+  "prevVersion": "0.0.3",
   "version": "0.0.4",
   "description": "",
   "author": "",

@@ -11,15 +11,15 @@ on:
 jobs:
   nodejs:
     # runs-on: self-hosted
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Validate merged
-        run: |
-          if [ "${{ github.event.pull_request.merged }}" != "true" ]; then
-            echo "PR is not merged, skip release CI"
-            exit 1
-          fi
+      # - name: Validate merged
+      #   run: |
+      #     if [ "${{ github.event.pull_request.merged }}" != "true" ]; then
+      #       echo "PR is not merged, skip release CI"
+      #       exit 1
+      #     fi
 
       - name: Checkout source code
         uses: actions/checkout@v3
@@ -29,9 +29,19 @@ jobs:
           version=$(jq -r '.version' package.json)
           echo "VERSION=$version" >> $GITHUB_ENV
 
-      - name: docker build
+      - name: docker setup & start
         env:
-          IMAGE_NAME: hello_ci_cd # 도커 이미지 이름과 태그를 버전 정보를 이용하여 설정합니다.
+          IMAGE_NAME: hello_ci_cd
+        # 도커 이미지 이름과 태그를 버전 정보를 이용하여 설정합니다.
+        # docker setup 순서
+        # 1. docker build
+        # 2. prev container stop & remove & prev image remove
+        # 3. docker run latest image
         run: |
           echo $IMAGE_NAME:$VERSION
           docker build -t $IMAGE_NAME:$VERSION .
+
+          prevVersion=$(jq -r '.prevVersion' package.json)
+          docker stop $IMAGE_NAME:$prevVersion || true && docker rm $IMAGE_NAME:$prevVersion || echo "no container"
+          docker rmi $IMAGE_NAME:$prevVersion || echo "no image"
+          docker run -d -p 3005:3000 --name $IMAGE_NAME $IMAGE_NAME:$VERSION
