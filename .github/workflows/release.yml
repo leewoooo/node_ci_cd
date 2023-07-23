@@ -13,12 +13,12 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      # - name: Validate merged
-      #   run: |
-      #     if [ "${{ github.event.pull_request.merged }}" != "true" ]; then
-      #       echo "PR is not merged, skip release CI"
-      #       exit 1
-      #     fi
+      - name: Validate merged
+        run: |
+          if [ "${{ github.event.pull_request.merged }}" != "true" ]; then
+            echo "PR is not merged, skip release CI"
+            exit 1
+          fi
 
       - name: Checkout source code
         uses: actions/checkout@v3
